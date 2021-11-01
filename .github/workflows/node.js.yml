@@ -54,7 +54,7 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:$(echo ${GITHUB_SHA} | cut -c1-8)
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ steps.slug.outputs.sha7 }}
     # - uses: actions/upload-artifact@v2
     #   if: always()
     #   with:
