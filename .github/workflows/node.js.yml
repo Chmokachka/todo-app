@@ -33,7 +33,7 @@ jobs:
         CI: false
     - name: check sha
       run: |
-        printenv
+        echo ${GITHUB_SHA} | cut -c1-8
     # - uses: actions/upload-artifact@v2
     #   if: always()
     #   with:
