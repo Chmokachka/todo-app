@@ -33,7 +33,7 @@ jobs:
         CI: false
     - name: check sha
       run: |
-        SHA=$SHA8
+        printenv
     # - uses: actions/upload-artifact@v2
     #   if: always()
     #   with:
