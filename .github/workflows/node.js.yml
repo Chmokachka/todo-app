@@ -50,7 +50,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         build-args: |
-          mongo_uri="${{ secrets.MONGO_URI }}"
+          mongo_uri=${{ secrets.MONGO_URI }}
         context: ./
         file: ./Dockerfile
         push: true
