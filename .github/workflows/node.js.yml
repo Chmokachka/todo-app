@@ -72,6 +72,9 @@ jobs:
     
     - name: Check deploy
       run: kubectl get deploy
+
+    - name: Update image in pods
+      run: kubectl set image deployment/todo-deploy todo-app=${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ steps.slug.outputs.sha7 }}
     # - name: deploy to cluster
     #   uses: kodermax/kubectl-aws-eks@master
     #   env:
