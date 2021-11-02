@@ -69,13 +69,15 @@ jobs:
 
     - name: Update kube config
       run: aws eks update-kubeconfig --name todo-app --region eu-central-1
-
-    - name: deploy to cluster
-      uses: kodermax/kubectl-aws-eks@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
-      with:
-        args: set image deployment/todo-deploy todo-app=${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ steps.slug.outputs.sha7 }} --record
+    
+    - name: Check deploy
+      run: kubectl get deploy
+    # - name: deploy to cluster
+    #   uses: kodermax/kubectl-aws-eks@master
+    #   env:
+    #     KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+    #   with:
+    #     args: set image deployment/todo-deploy todo-app=${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ steps.slug.outputs.sha7 }} --record
         
     - name: verify deployment
       uses: kodermax/kubectl-aws-eks@master
