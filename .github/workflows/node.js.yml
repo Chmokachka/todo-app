@@ -8,7 +8,8 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+env:
+  DOCKER_REP: ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ steps.slug.outputs.sha7 }}
 jobs:
   build-and-push:
 
@@ -54,15 +55,11 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ steps.slug.outputs.sha7 }}
+        tags: ${{ env.DOCKER_REP }}
 
   update_deploy:
     runs-on: ubuntu-latest
-    needs: build-and-push
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}    
+    needs: build-and-push   
     steps:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -78,7 +75,7 @@ jobs:
       run: kubectl get deploy
 
     - name: Update image in pods
-      run: kubectl set image deployment/todo-app-deploy todo-app=${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ steps.slug.outputs.sha7 }}
+      run: kubectl set image deployment/todo-app-deploy todo-app=${{ env.DOCKER_REP }}
          
     - name: verify deployment
       uses: kodermax/kubectl-aws-eks@master
